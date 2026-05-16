@@ -46,13 +46,35 @@ def predict(model, X, threshold=THRESHOLD):
     labels = (probs > threshold).astype(int)
     return probs, labels
 
-def demo_from_csv(model, csv_path=r"C:\Users\zed1f\Downloads\creditcard.csv\creditcard.csv", n=20):
+def generate_synthetic_data(n=1000, fraud_ratio=0.02):
+    """Synthetic stand-in with the same schema as the Kaggle dataset."""
+    SEED = 42
+    np.random.seed(SEED)
+    n_fraud = int(n * fraud_ratio)
+    n_legit = n - n_fraud
+
+    legit  = np.random.randn(n_legit, 28)
+    fraud  = np.random.randn(n_fraud, 28) + 2.5   # shifted distribution
+
+    X = np.vstack([legit, fraud])
+    y = np.array([0]*n_legit + [1]*n_fraud)
+    t = np.random.uniform(0, 172800, n)
+    amt = np.abs(np.random.randn(n)) * 100
+
+    cols = [f"V{i}" for i in range(1, 29)]
+    df = pd.DataFrame(X, columns=cols)
+    df.insert(0, "Time", t)
+    df["Amount"] = amt
+    df["Class"]  = y
+    return df
+
+def demo_from_csv(model, csv_path="data/creditcard.csv", n=20):
     from sklearn.preprocessing import StandardScaler
     if not os.path.exists(csv_path):
-        print(f"⚠ CSV not found at {csv_path}. Run this from the root directory.")
-        return
-
-    df = pd.read_csv(csv_path)
+        print(f"⚠ CSV not found at {csv_path}. Generating synthetic demo data for live demo.")
+        df = generate_synthetic_data(n=1000)
+    else:
+        df = pd.read_csv(csv_path)
     
     # -> APPLY HOUR TRICK TO MATCH TRAINING  <-
     df['hour'] = (df['Time'] // 3600) % 24

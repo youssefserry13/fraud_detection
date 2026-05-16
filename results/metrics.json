@@ -1,0 +1,6 @@
+{
+  "roc_auc": 1.0,
+  "avg_prec": 1.0,
+  "f1_fraud": 1.0,
+  "threshold": 0.95
+}

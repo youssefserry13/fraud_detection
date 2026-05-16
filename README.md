@@ -1,19 +1,19 @@
 # Fraud Detection System — Deep Neural Network
 
-**Course Project | Person B deliverables**
-
 ---
 
 ## Project Structure
 
 ```
-fraud_detection/
-├── data/               ← Place creditcard.csv here
-├── models/             ← Saved model weights (auto-created)
-├── results/            ← Plots & metrics (auto-created)
+.
+├── data/               ← Place creditcard.csv here (optional)
 ├── demo/
 │   └── demo.py         ← Live inference demo
+├── docs/               ← Project documentation (reports and presentations)
+├── models/             ← Saved model weights
+├── results/            ← Plots & metrics
 ├── train.py            ← Main DNN training script
+├── train_gpu.py        ← Training script optimized for GPU
 ├── requirements.txt
 └── README.md
 ```
