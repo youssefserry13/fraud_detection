@@ -1,6 +1,6 @@
 """
 Fraud Detection - DNN Training Script
-Person B: DNN architecture, training, metrics, optimization
+DNN architecture, training, metrics, optimization
 """
 
 import numpy as np
@@ -51,21 +51,21 @@ print(f"Using device: {DEVICE}")
 # ─────────────────────────────────────────────
 # 1. LOAD DATA
 # ─────────────────────────────────────────────
-def load_data(path="/mnt/c/Users/zed1f/Downloads/creditcard.csv/creditcard.csv"):
+def load_data(path="data/creditcard.csv"):
     if os.path.exists(path):
         df = pd.read_csv(path)
-        
-        # ---> INJECT FEATURE ENGINEERING HERE <---
-        # 1. Convert seconds into Hour of Day (0-23)
-        df['hour'] = (df['Time'] // 3600) % 24
-        # 2. Drop the original 'Time'
-        df = df.drop(['Time'], axis=1)
-        
         print(f"Dataset loaded: {df.shape}")
-        return df
     else:
-        print("⚠  creditcard.csv not found — generating synthetic demo data.")
-        return generate_synthetic_data()
+        print(f"⚠  {path} not found — generating synthetic demo data.")
+        df = generate_synthetic_data()
+
+    # ---> FEATURE ENGINEERING <---
+    # 1. Convert seconds into Hour of Day (0-23)
+    df['hour'] = (df['Time'] // 3600) % 24
+    # 2. Drop the original 'Time'
+    df = df.drop(['Time'], axis=1)
+
+    return df
 
 def generate_synthetic_data(n=10000, fraud_ratio=0.02):
     """Synthetic stand-in with the same schema as the Kaggle dataset."""
